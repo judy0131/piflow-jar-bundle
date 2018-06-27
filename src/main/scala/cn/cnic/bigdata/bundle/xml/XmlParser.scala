@@ -5,9 +5,9 @@ import org.apache.spark.sql.{Column, DataFrame, SparkSession}
 import cn.piflow.{Path, _}
 import org.apache.spark.sql.types.{StringType, StructField, StructType}
 
-class XmlParser(xmlpath:String, rowTag:String, schema: StructType = null) extends Process {
+class XmlParser(xmlpath:String, rowTag:String, schema: StructType = null) extends Stop {
 
-  def perform(in: ProcessInputStream, out: ProcessOutputStream, pec: ProcessExecutionContext): Unit = {
+  def perform(in: JobInputStream, out: JobOutputStream, pec: JobContext): Unit = {
 
     val spark = pec.get[SparkSession]()
 
@@ -24,7 +24,7 @@ class XmlParser(xmlpath:String, rowTag:String, schema: StructType = null) extend
     out.write(xmlDF)
   }
 
-  def initialize(ctx: FlowExecutionContext): Unit = {
+  def initialize(ctx: ProcessContext): Unit = {
 
   }
 }

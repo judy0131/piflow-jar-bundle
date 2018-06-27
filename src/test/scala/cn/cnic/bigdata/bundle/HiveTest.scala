@@ -17,9 +17,9 @@ class HiveTest {
 
     val flow = new FlowImpl();
 
-    flow.addProcess("SelectHiveQL", new SelectHiveQL("select * from sparktest.student"));
-    flow.addProcess("PutHiveStreaming", new PutHiveStreaming("sparktest","studenthivestreaming"));
-    flow.addPath(Path.of("SelectHiveQL"->"PutHiveStreaming"));
+    flow.addStop("SelectHiveQL", new SelectHiveQL("select * from sparktest.student"));
+    flow.addStop("PutHiveStreaming", new PutHiveStreaming("sparktest","studenthivestreaming"));
+    flow.addPath(Path.from("SelectHiveQL").to("PutHiveStreaming"));
 
 
     val spark = SparkSession.builder()
@@ -32,12 +32,12 @@ class HiveTest {
       .enableHiveSupport()
       .getOrCreate()
 
-    val exe = Runner.create()
+    val process = Runner.create()
       .bind(classOf[SparkSession].getName, spark)
-      .schedule(flow);
+      .start(flow);
 
-    exe.start();
-
+    process.awaitTermination();
+    spark.close();
 
   }
 

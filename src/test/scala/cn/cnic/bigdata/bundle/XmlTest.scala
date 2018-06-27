@@ -3,7 +3,7 @@ package cn.cnic.bigdata.bundle
 import cn.cnic.bigdata.bundle.common.SelectField
 import cn.cnic.bigdata.bundle.xml.XmlParser
 import cn.cnic.bigdata.hive.PutHiveStreaming
-import cn.piflow.{Flow, FlowImpl, Path, Runner}
+import cn.piflow._
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.types.{StringType, StructField, StructType}
 import org.junit.Test
@@ -28,10 +28,10 @@ class XmlTest {
     ))
     val selectedField : String = "title,author,pages"
 
-    flow.addProcess("XmlParser", new XmlParser( xmlpath,rowTag,schema));
-    flow.addProcess("SelectField", new SelectField( selectedField));
-    flow.addProcess("PutHiveStreaming", new PutHiveStreaming("sparktest","dblp_phdthesis"));
-    flow.addPath(Path.of("XmlParser"->"SelectField"->"PutHiveStreaming"))
+    flow.addStop("XmlParser", new XmlParser( xmlpath,rowTag,schema));
+    flow.addStop("SelectField", new SelectField( selectedField));
+    flow.addStop("PutHiveStreaming", new PutHiveStreaming("sparktest","dblp_phdthesis"));
+    flow.addPath(Path.from("XmlParser").to("SelectField").to("PutHiveStreaming"))
 
 
     val spark = SparkSession.builder()
@@ -44,11 +44,12 @@ class XmlTest {
       .enableHiveSupport()
       .getOrCreate()
 
-    val exe = Runner.create()
+    val process = Runner.create()
       .bind(classOf[SparkSession].getName, spark)
-      .schedule(flow);
+      .start(flow);
 
-    exe.start();
+    process.awaitTermination();
+    spark.close();
   }
 
 }

@@ -4,10 +4,10 @@ import cn.piflow._
 import org.apache.spark.sql.{Column, DataFrame, SparkSession}
 
 
-class SelectHiveQL(hiveQL:String) extends Process {
+class SelectHiveQL(hiveQL:String) extends Stop {
 
 
-  def perform(in: ProcessInputStream, out: ProcessOutputStream, pec: ProcessExecutionContext): Unit = {
+  def perform(in: JobInputStream, out: JobOutputStream, pec: JobContext): Unit = {
     val spark = pec.get[SparkSession]()
 
     import spark.sql
@@ -17,7 +17,7 @@ class SelectHiveQL(hiveQL:String) extends Process {
     out.write(studentDF)
   }
 
-  def initialize(ctx: FlowExecutionContext): Unit = {
+  def initialize(ctx: ProcessContext): Unit = {
 
   }
 

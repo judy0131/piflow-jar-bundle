@@ -1,5 +1,6 @@
 package cn.cnic.bigdata.bundle
 
+import cn.cnic.bigdata.bundle.xml.{XmlParser, XmlSave}
 import cn.cnic.bigdata.hive.{PutHiveStreaming, SelectHiveQL}
 import cn.piflow._
 import org.apache.spark.sql.SparkSession
@@ -14,11 +15,11 @@ class HiveTest {
   @Test
   def testHive(): Unit = {
 
-    val flow: Flow = new FlowImpl();
+    val flow = new FlowImpl();
 
-    flow.addProcess("SelectHiveQL", new SelectHiveQL("select * from sparktest.student", "student"));
-    flow.addProcess("PutHiveStreaming", new PutHiveStreaming("student","sparktest","studenthivestreaming"));
-    flow.addTrigger("PutHiveStreaming", new DependencyTrigger("SelectHiveQL"));
+    flow.addProcess("SelectHiveQL", new SelectHiveQL("select * from sparktest.student"));
+    flow.addProcess("PutHiveStreaming", new PutHiveStreaming("sparktest","studenthivestreaming"));
+    flow.addPath(Path.of("SelectHiveQL"->"PutHiveStreaming"));
 
 
     val spark = SparkSession.builder()
@@ -31,13 +32,12 @@ class HiveTest {
       .enableHiveSupport()
       .getOrCreate()
 
-    val exe = Runner.bind("localBackupDir", "/tmp/")
+    val exe = Runner.create()
       .bind(classOf[SparkSession].getName, spark)
-      .run(flow);
+      .schedule(flow);
 
-    exe.start("SelectHiveQL");
-    Thread.sleep(30000);
-    exe.stop();
+    exe.start();
+
 
   }
 

@@ -1,57 +1,26 @@
 package cn.cnic.bigdata.hive
 
 import cn.piflow._
-import cn.piflow.util.PropertyUtil
-import org.apache.hadoop.fs.{FileSystem, Path}
-import org.apache.spark.sql.SparkSession
+import org.apache.spark.sql.{Column, DataFrame, SparkSession}
 
 
-class SelectHiveQL(hiveQL:String, dataframeOut:String) extends Process {
+class SelectHiveQL(hiveQL:String) extends Process {
 
 
-
-
-  override def shadow(pec: ProcessExecutionContext) = {
-
+  def perform(in: ProcessInputStream, out: ProcessOutputStream, pec: ProcessExecutionContext): Unit = {
     val spark = pec.get[SparkSession]()
 
     import spark.sql
-    val studentDF = sql(this.hiveQL)
+    val studentDF = sql(hiveQL)
     studentDF.show()
 
+    out.write(studentDF)
+  }
 
-    new Shadow {
-      override def discard(pec: ProcessExecutionContext): Unit = {
-        //tmpfile.delete();
-      }
-
-      override def perform(pec: ProcessExecutionContext): Unit = {
-        val dataframeOutPath : String = PropertyUtil.getPropertyValue("dataframe_hdfs_path") + dataframeOut + ".parquet"
-        //TODO: delete the path
-        val path = new Path(dataframeOutPath)
-        val hdfs = FileSystem.get(new java.net.URI(PropertyUtil.getPropertyValue("hdfsURI")),spark.sparkContext.hadoopConfiguration)
-        if (hdfs.exists(path)){
-          System.out.println("Deleting " + dataframeOutPath + "!!!!!!!!!!!!!!")
-          hdfs.delete(path,true)
-        }
-        studentDF.write.parquet(dataframeOutPath)
-        //spark.close();
-      }
-
-      override def commit(pec: ProcessExecutionContext): Unit = {
-        //tmpfile.renameTo(new File("./out/wordcount"));
-      }
-    };
+  def initialize(ctx: FlowExecutionContext): Unit = {
 
   }
 
-  /**
-    * Backup is used to perform undo()
-    *
-    * @param pec
-    * @return
-    */
-  override def backup(pec: ProcessExecutionContext): Backup = ???
 }
 
 

@@ -13,11 +13,11 @@ class JDBCTest {
 
     val url = "jdbc:mysql://10.0.86.90/sparktest"
     val driver = "com.mysql.jdbc.Driver"
-    val sql = "select * from student"
+    val sql = "select student.id, name, gender, age, score from student, student_score where student.id = student_score.id"
     val user = "root"
     val password = "root"
 
-    val writeDBtable = "student_bak"
+    val writeDBtable = "student_full"
 
     val flow = new FlowImpl();
 

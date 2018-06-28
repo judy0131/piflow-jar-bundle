@@ -15,12 +15,13 @@ class CSVTest {
     val csvPath = "hdfs://10.0.86.89:9000/xjzhu/student.csv"
     val header = true
     val delimiter = ","
+    val schema = ""
     val jsonPath = "hdfs://10.0.86.89:9000/xjzhu/student_csv2json"
 
 
     val flow = new FlowImpl();
 
-    flow.addStop("CSVParser", new CSVParser(csvPath,header,delimiter));
+    flow.addStop("CSVParser", new CSVParser(csvPath,header,delimiter, schema));
     flow.addStop("JsonSave", new JsonSave(jsonPath));
     flow.addPath(Path.from("CSVParser").to("JsonSave"));
 
@@ -45,15 +46,16 @@ class CSVTest {
   @Test
   def testCSVSchemaRead(): Unit ={
 
-    val csvPath = "hdfs://10.0.86.89:9000/xjzhu/student.csv"
-    val header = true
+    val csvPath = "hdfs://10.0.86.89:9000/xjzhu/student_schema.csv"
+    val header = false
     val delimiter = ","
-    val jsonPath = "hdfs://10.0.86.89:9000/xjzhu/student_csv2json"
+    val schema = "id,name,gender,age"
+    val jsonPath = "hdfs://10.0.86.89:9000/xjzhu/student_schema_csv2json"
 
 
     val flow = new FlowImpl();
 
-    flow.addStop("CSVParser", new CSVParser(csvPath,header,delimiter));
+    flow.addStop("CSVParser", new CSVParser(csvPath,header,delimiter,schema));
     flow.addStop("JsonSave", new JsonSave(jsonPath));
     flow.addPath(Path.from("CSVParser").to("JsonSave"));
 

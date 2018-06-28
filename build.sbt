@@ -13,4 +13,5 @@ libraryDependencies ++= Seq(
   "junit" % "junit" % "4.11" % Test,
   "org.quartz-scheduler" % "quartz" % "2.3.0",
   "mysql" % "mysql-connector-java" % "5.1.40"
+
 )

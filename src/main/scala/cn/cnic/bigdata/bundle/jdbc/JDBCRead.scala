@@ -10,12 +10,13 @@ class JDBCRead(driver:String, url:String, user:String, password:String, sql:Stri
     val dbtable = "( "  + sql + ") AS Temp"
     val jdbcDF = spark.read.format("jdbc")
       .option("url", url)
-      .option("driver", driver)
+      //.option("driver", driver)
       .option("dbtable", dbtable)
       .option("user", user)
       .option("password",password)
       .load()
     jdbcDF.show(10)
+
     out.write(jdbcDF)
 
   }

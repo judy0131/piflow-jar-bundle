@@ -1,6 +1,6 @@
 package cn.cnic.bigdata.bundle
 
-import cn.cnic.bigdata.bundle.jdbc.JDBCRead
+import cn.cnic.bigdata.bundle.jdbc.{JDBCRead, JDBCWrite}
 import cn.cnic.bigdata.hive.{PutHiveStreaming, SelectHiveQL}
 import cn.piflow.{FlowImpl, Path, Runner}
 import org.apache.spark.sql.SparkSession
@@ -17,11 +17,14 @@ class JDBCTest {
     val user = "root"
     val password = "root"
 
+    val writeDBtable = "student_bak"
+
     val flow = new FlowImpl();
 
     flow.addStop("JDBCRead", new JDBCRead(driver, url, user, password, sql));
-    flow.addStop("PutHiveStreaming", new PutHiveStreaming("sparktest","studenthivestreaming"));
-    flow.addPath(Path.from("JDBCRead").to("PutHiveStreaming"));
+    flow.addStop("JDBCWrite", new JDBCWrite( url, user, password, writeDBtable));
+    //flow.addStop("PutHiveStreaming", new PutHiveStreaming("sparktest","studenthivestreaming"));
+    flow.addPath(Path.from("JDBCRead").to("JDBCWrite"));
 
     val spark = SparkSession.builder()
       .master("spark://10.0.86.89:7077")

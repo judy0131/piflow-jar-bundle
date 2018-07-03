@@ -12,11 +12,12 @@ class JsonTest {
   def testJsonPathParser(): Unit ={
 
     val jsonPath = "hdfs://10.0.86.89:9000/xjzhu/student.json"
+    val tag = "student"
     val jsonSavePath = "hdfs://10.0.86.89:9000/xjzhu/example_json_save"
 
     val flow = new FlowImpl();
 
-    flow.addStop("JsonPathParser", new JsonPathParser(jsonPath));
+    flow.addStop("JsonPathParser", new JsonPathParser(jsonPath, tag));
     flow.addStop("JsonSave", new JsonSave(jsonSavePath));
     flow.addPath(Path.from("JsonPathParser").to("JsonSave"));
 

@@ -30,7 +30,7 @@ class XmlTest {
 
     flow.addStop("XmlParser", new XmlParser( xmlpath,rowTag,schema));
     flow.addStop("SelectField", new SelectField( selectedField));
-    flow.addStop("PutHiveStreaming", new PutHiveStreaming("sparktest","dblp_phdthesis"));
+    //flow.addStop("PutHiveStreaming", new PutHiveStreaming("sparktest","dblp_phdthesis"));
     flow.addPath(Path.from("XmlParser").to("SelectField").to("PutHiveStreaming"))
 
 

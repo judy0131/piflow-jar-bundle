@@ -3,14 +3,16 @@ package cn.cnic.bigdata.bundle.json
 import cn.piflow._
 import org.apache.spark.sql.SparkSession
 
-class JsonPathParser(jsonPath: String) extends Stop{
+class JsonPathParser(jsonPath: String, tag : String) extends Stop{
 
   def perform(in: JobInputStream, out: JobOutputStream, pec: JobContext): Unit = {
 
     val spark = pec.get[SparkSession]()
 
-    val jsonDF = spark.read.option("multiline","true")json(jsonPath)
-    jsonDF.show(10)
+    val jsonDF = spark.read.option("multiline","true").json(jsonPath)
+    val jsonDFNew = jsonDF.select(tag)
+    jsonDFNew.printSchema()
+    jsonDFNew.show(10)
     out.write(jsonDF)
   }
 

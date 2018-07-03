@@ -9,16 +9,16 @@ import org.junit.Test
 
 class HiveTest {
 
-  val hdfsURI = "hdfs://10.0.86.89:9000"
-  val dataframeHdfsPath = hdfsURI + "/xjzhu/"
+  val selectHiveQLParameters : Map[String, String] = Map("hiveQL" -> "select * from sparktest.student")
+  val putHiveStreamingParameters : Map[String, String] = Map("database" -> "sparktest", "table" -> "studenthivestreaming")
 
   @Test
   def testHive(): Unit = {
 
     val flow = new FlowImpl();
 
-    flow.addStop("SelectHiveQL", new SelectHiveQL("select * from sparktest.student"));
-    flow.addStop("PutHiveStreaming", new PutHiveStreaming("sparktest","studenthivestreaming"));
+    flow.addStop("SelectHiveQL", new SelectHiveQL(selectHiveQLParameters));
+    flow.addStop("PutHiveStreaming", new PutHiveStreaming(putHiveStreamingParameters));
     flow.addPath(Path.from("SelectHiveQL").to("PutHiveStreaming"));
 
 

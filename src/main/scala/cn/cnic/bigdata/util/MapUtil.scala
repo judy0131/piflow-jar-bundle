@@ -2,11 +2,16 @@ package cn.cnic.bigdata.util
 
 import scala.util.parsing.json.JSON
 
-object JsonUtil {
+object MapUtil {
 
-  def parse(jsonstr : String) : Map[String, String] = {
-    val jsonMap : Map = JSON.parseFull(jsonstr)
-    println(jsonMap)
-    jsonMap
+  def get(map : Map[String,Any], key:String) : Any = {
+    map.get(key) match {
+      case None => None
+      case Some(x:String) => x
+      case Some(x:List[String]) => x
+      case Some(x:List[Map[String, String]]) => x
+      case Some(x:Map[String, Any]) => x
+      case _ => throw new IllegalArgumentException
+    }
   }
 }

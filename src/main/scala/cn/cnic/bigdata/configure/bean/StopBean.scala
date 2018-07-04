@@ -1,6 +1,7 @@
 package cn.cnic.bigdata.configure.bean
 
-import cn.cnic.bigdata.util.OptionUtil
+import cn.cnic.bigdata.util.{MapUtil, OptionUtil}
+import cn.piflow.Stop
 
 class StopBean {
 
@@ -9,18 +10,27 @@ class StopBean {
   var bundle : String = _
   var properties : Map[String, String] = _
 
-  def init(uuid:String, name:String, bundle:String, properties:Map[String,String]) = {
-    this.uuid = uuid
-    this.name = name
-    this.bundle = bundle
-    this.properties = properties
+  def init(map:Map[String,Any]) = {
+    this.uuid = MapUtil.get(map,"uuid").asInstanceOf[String]
+    this.name = MapUtil.get(map,"name").asInstanceOf[String]
+    this.bundle = MapUtil.get(map,"bundle").asInstanceOf[String]
+    this.properties = MapUtil.get(map, "properties").asInstanceOf[Map[String, String]]
   }
 
-  def init(map:Map[String,String]) = {
-    this.uuid = OptionUtil.get(map.get("uuid"))
-    this.name = OptionUtil.get(map.get("name"))
-    this.bundle = OptionUtil.get(map.get("bundle"))
-    this.properties = OptionUtil.get(map.get("uuid"))
+  def constructStop() : Stop = {
+    val stop = Class.forName(this.bundle).getConstructor(classOf[Map[String, String]]).newInstance(this.properties)
+    stop.asInstanceOf[Stop]
+  }
+
+}
+
+object StopBean  {
+
+  def apply(map : Map[String, Any]): StopBean = {
+    val stopBean = new StopBean()
+    stopBean.init(map)
+    stopBean
+    //stopBean.getStop()
   }
 
 }

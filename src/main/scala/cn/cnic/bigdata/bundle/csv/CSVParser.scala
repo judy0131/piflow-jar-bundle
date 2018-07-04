@@ -1,11 +1,17 @@
 package cn.cnic.bigdata.bundle.csv
 
+import cn.cnic.bigdata.util.OptionUtil
 import cn.piflow._
 import org.apache.spark.sql.types.{StringType, StructField, StructType}
 import org.apache.spark.sql.{Column, DataFrame, SparkSession}
 
 
-class CSVParser(csvPath: String, header: Boolean, delimiter: String, schema: String) extends Stop{
+class CSVParser(map : Map[String, String]) extends Stop{
+
+  var csvPath: String = OptionUtil.get(map.get("csvPath"))
+  val header: Boolean = OptionUtil.get(map.get("header")).toBoolean
+  val delimiter: String = OptionUtil.get(map.get("delimiter"))
+  val schema: String = OptionUtil.get(map.get("schema"))
 
   def perform(in: JobInputStream, out: JobOutputStream, pec: JobContext): Unit = {
 

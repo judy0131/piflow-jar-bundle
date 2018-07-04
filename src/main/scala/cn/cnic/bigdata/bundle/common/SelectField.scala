@@ -1,10 +1,13 @@
 package cn.cnic.bigdata.bundle.common
 
+import cn.cnic.bigdata.util.OptionUtil
 import cn.piflow._
 import org.apache.spark.sql.{Column, DataFrame}
 
 
-class SelectField(schema:String) extends Stop {
+class SelectField(map : Map[String, String]) extends Stop {
+
+  val schema:String = OptionUtil.get(map.get("schema"))
 
   def perform(in: JobInputStream, out: JobOutputStream, pec: JobContext): Unit = {
     val df = in.read()

@@ -9,4 +9,11 @@ object OptionUtil {
     }
   }
 
+  def getOrElse(x: Option[String], default : String) : String = {
+    x match {
+      case Some(x)  => x
+      case None => default
+    }
+  }
+
 }

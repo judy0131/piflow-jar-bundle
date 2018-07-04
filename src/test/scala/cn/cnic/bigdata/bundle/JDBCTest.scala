@@ -1,7 +1,7 @@
 package cn.cnic.bigdata.bundle
 
 import cn.cnic.bigdata.bundle.jdbc.{JDBCRead, JDBCWrite}
-import cn.cnic.bigdata.hive.{PutHiveStreaming, SelectHiveQL}
+import cn.cnic.bigdata.bundle.hive.{PutHiveStreaming, SelectHiveQL}
 import cn.piflow.{FlowImpl, Path, Runner}
 import org.apache.spark.sql.SparkSession
 import org.junit.Test

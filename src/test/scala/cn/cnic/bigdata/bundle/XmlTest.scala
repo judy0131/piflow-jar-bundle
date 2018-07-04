@@ -2,7 +2,7 @@ package cn.cnic.bigdata.bundle
 
 import cn.cnic.bigdata.bundle.common.SelectField
 import cn.cnic.bigdata.bundle.xml.XmlParser
-import cn.cnic.bigdata.hive.PutHiveStreaming
+import cn.cnic.bigdata.bundle.hive.PutHiveStreaming
 import cn.piflow._
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.types.{StringType, StructField, StructType}
@@ -28,10 +28,14 @@ class XmlTest {
     ))
     val selectedField : String = "title,author,pages"
 
+    val putHiveStreamingParametersMap = Map("database" -> "sparktest", "table" -> "dblp_phdthesis")
+
     flow.addStop("XmlParser", new XmlParser( xmlpath,rowTag,schema));
     flow.addStop("SelectField", new SelectField( selectedField));
-    //flow.addStop("PutHiveStreaming", new PutHiveStreaming("sparktest","dblp_phdthesis"));
-    flow.addPath(Path.from("XmlParser").to("SelectField").to("PutHiveStreaming"))
+    flow.addStop("PutHiveStreaming", new PutHiveStreaming(putHiveStreamingParametersMap));
+    //flow.addPath(Path.from("XmlParser").to("SelectField").to("PutHiveStreaming"))
+    flow.addPath(Path.from("XmlParser").to("SelectField"))
+    flow.addPath(Path.from("SelectField").to("PutHiveStreaming"))
 
 
     val spark = SparkSession.builder()

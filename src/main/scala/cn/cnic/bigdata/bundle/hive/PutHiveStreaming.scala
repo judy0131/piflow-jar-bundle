@@ -1,4 +1,4 @@
-package cn.cnic.bigdata.hive
+package cn.cnic.bigdata.bundle.hive
 
 import cn.cnic.bigdata.util.OptionUtil
 import cn.piflow._
@@ -23,8 +23,8 @@ import org.apache.spark.sql.SparkSession
 }*/
 class PutHiveStreaming(map : Map[String, String]) extends Stop {
 
-  val database:String = OptionUtil.get(map.get("database"))
-  val table:String = OptionUtil.get(map.get("table"))
+  var database:String = OptionUtil.get(map.get("database"))
+  var table:String = OptionUtil.get(map.get("table"))
 
   def perform(in: JobInputStream, out: JobOutputStream, pec: JobContext): Unit = {
     val spark = pec.get[SparkSession]()
@@ -40,4 +40,5 @@ class PutHiveStreaming(map : Map[String, String]) extends Stop {
   def initialize(ctx: ProcessContext): Unit = {
 
   }
+
 }

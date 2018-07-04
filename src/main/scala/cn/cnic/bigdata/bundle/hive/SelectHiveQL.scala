@@ -1,4 +1,4 @@
-package cn.cnic.bigdata.hive
+package cn.cnic.bigdata.bundle.hive
 
 import cn.cnic.bigdata.util.OptionUtil
 import cn.piflow._
@@ -26,7 +26,7 @@ import org.apache.spark.sql.{Column, DataFrame, SparkSession}
 
 class SelectHiveQL(map : Map[String, String]) extends Stop {
 
-  val hiveQL:String = OptionUtil.get(map.get("hiveQL"))
+  var hiveQL:String = OptionUtil.get(map.get("hiveQL"))
 
   def perform(in: JobInputStream, out: JobOutputStream, pec: JobContext): Unit = {
     val spark = pec.get[SparkSession]()

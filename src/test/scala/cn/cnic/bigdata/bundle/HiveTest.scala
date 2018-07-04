@@ -1,7 +1,7 @@
 package cn.cnic.bigdata.bundle
 
 import cn.cnic.bigdata.bundle.xml.{XmlParser, XmlSave}
-import cn.cnic.bigdata.hive.{PutHiveStreaming, SelectHiveQL}
+import cn.cnic.bigdata.bundle.hive.{PutHiveStreaming, SelectHiveQL}
 import cn.piflow._
 import org.apache.spark.sql.SparkSession
 import org.junit.Test

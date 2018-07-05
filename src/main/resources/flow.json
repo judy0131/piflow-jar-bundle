@@ -41,20 +41,37 @@
             "delimiter":",",
             "schema":"title,author,pages"
         }
-
+      },
+      {
+        "uuid":"555",
+        "name":"Merge",
+        "bundle":"cn.cnic.bigdata.bundle.common.Merge",
+        "properties":{}
       }
     ],
     "paths":[
       {
         "from":"XmlParser",
+        "outport":"",
+        "inport":"",
         "to":"SelectField"
       },
       {
         "from":"SelectField",
-        "to":"PutHiveStreaming"
+        "outport":"",
+        "inport":"data1",
+        "to":"Merge"
       },
       {
         "from":"CSVParser",
+        "outport":"",
+        "inport":"data2",
+        "to":"Merge"
+      },
+      {
+        "from":"Merge",
+        "outport":"",
+        "inport":"",
         "to":"PutHiveStreaming"
       }
     ]

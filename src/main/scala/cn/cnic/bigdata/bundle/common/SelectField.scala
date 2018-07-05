@@ -1,13 +1,14 @@
 package cn.cnic.bigdata.bundle.common
 
-import cn.cnic.bigdata.util.OptionUtil
+import cn.cnic.bigdata.bundle.ConfigurableStop
+import cn.cnic.bigdata.util.{MapUtil, OptionUtil}
 import cn.piflow._
 import org.apache.spark.sql.{Column, DataFrame}
 
 
-class SelectField(map : Map[String, String]) extends Stop {
+class SelectField extends ConfigurableStop {
 
-  val schema:String = OptionUtil.get(map.get("schema"))
+  var schema:String = _
 
   def perform(in: JobInputStream, out: JobOutputStream, pec: JobContext): Unit = {
     val df = in.read()
@@ -27,6 +28,10 @@ class SelectField(map : Map[String, String]) extends Stop {
 
   def initialize(ctx: ProcessContext): Unit = {
 
+  }
+
+  def setProperties(map : Map[String, Any]): Unit = {
+    schema = MapUtil.get(map,"schema").asInstanceOf[String]
   }
 }
 

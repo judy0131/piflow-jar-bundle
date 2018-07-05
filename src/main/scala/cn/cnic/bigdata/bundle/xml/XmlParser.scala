@@ -1,16 +1,17 @@
 package cn.cnic.bigdata.bundle.xml
 
-import cn.cnic.bigdata.util.OptionUtil
+import cn.cnic.bigdata.bundle.ConfigurableStop
+import cn.cnic.bigdata.util.{MapUtil, OptionUtil}
 import org.apache.hadoop.fs.FileSystem
 import org.apache.spark.sql.{Column, DataFrame, SparkSession}
 import cn.piflow.{Path, _}
 import org.apache.spark.sql.types.{StringType, StructField, StructType}
 
-class XmlParser(map : Map[String, String]) extends Stop {
+class XmlParser extends ConfigurableStop {
 
-  val xmlpath:String = OptionUtil.get(map.get("xmlpath"))
-  val rowTag:String = OptionUtil.get(map.get("rowTag"))
-  val schema: StructType = null
+  var xmlpath:String = _
+  var rowTag:String = _
+  var schema: StructType = _
 
   def perform(in: JobInputStream, out: JobOutputStream, pec: JobContext): Unit = {
 
@@ -31,5 +32,11 @@ class XmlParser(map : Map[String, String]) extends Stop {
 
   def initialize(ctx: ProcessContext): Unit = {
 
+  }
+
+  def setProperties(map : Map[String, Any]) = {
+    xmlpath = MapUtil.get(map,"xmlpath").asInstanceOf[String]
+    rowTag = MapUtil.get(map,"rowTag").asInstanceOf[String]
+    schema = null
   }
 }

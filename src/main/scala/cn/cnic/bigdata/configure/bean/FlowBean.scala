@@ -33,7 +33,7 @@ class FlowBean {
       flow.addStop(stopBean.name,stopBean.constructStop())
     })
     this.paths.foreach( pathBean => {
-      flow.addPath(Path.from(pathBean.from).to(pathBean.to))
+      flow.addPath(Path.from(pathBean.from).via(pathBean.outport, pathBean.inport).to(pathBean.to))
     })
 
     flow

@@ -9,7 +9,7 @@ import org.junit.Test
 
 class CSVTest {
 
-  @Test
+  /*@Test
   def testCSVHeaderRead(): Unit ={
 
     val cSVParserParameters : Map[String, String] = Map(
@@ -81,6 +81,6 @@ class CSVTest {
 
     process.awaitTermination();
     spark.close();
-  }
+  }*/
 
 }

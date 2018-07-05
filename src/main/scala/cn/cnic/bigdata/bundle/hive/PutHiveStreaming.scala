@@ -1,6 +1,7 @@
 package cn.cnic.bigdata.bundle.hive
 
-import cn.cnic.bigdata.util.OptionUtil
+import cn.cnic.bigdata.bundle.ConfigurableStop
+import cn.cnic.bigdata.util.{MapUtil, OptionUtil}
 import cn.piflow._
 import org.apache.spark.sql.SparkSession
 /*class PutHiveStreaming( database:String, table:String) extends Stop {
@@ -21,10 +22,10 @@ import org.apache.spark.sql.SparkSession
 
   }
 }*/
-class PutHiveStreaming(map : Map[String, String]) extends Stop {
+class PutHiveStreaming extends ConfigurableStop {
 
-  var database:String = OptionUtil.get(map.get("database"))
-  var table:String = OptionUtil.get(map.get("table"))
+  var database:String = _
+  var table:String = _
 
   def perform(in: JobInputStream, out: JobOutputStream, pec: JobContext): Unit = {
     val spark = pec.get[SparkSession]()
@@ -39,6 +40,11 @@ class PutHiveStreaming(map : Map[String, String]) extends Stop {
 
   def initialize(ctx: ProcessContext): Unit = {
 
+  }
+
+  def setProperties(map : Map[String, Any]) = {
+    database = MapUtil.get(map,"database").asInstanceOf[String]
+    table = MapUtil.get(map,"table").asInstanceOf[String]
   }
 
 }

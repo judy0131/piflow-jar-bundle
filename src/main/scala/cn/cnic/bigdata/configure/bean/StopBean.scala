@@ -1,5 +1,6 @@
 package cn.cnic.bigdata.configure.bean
 
+import cn.cnic.bigdata.bundle.ConfigurableStop
 import cn.cnic.bigdata.util.{MapUtil, OptionUtil}
 import cn.piflow.Stop
 
@@ -17,9 +18,11 @@ class StopBean {
     this.properties = MapUtil.get(map, "properties").asInstanceOf[Map[String, String]]
   }
 
-  def constructStop() : Stop = {
-    val stop = Class.forName(this.bundle).getConstructor(classOf[Map[String, String]]).newInstance(this.properties)
-    stop.asInstanceOf[Stop]
+  def constructStop() : ConfigurableStop = {
+    //val stop = Class.forName(this.bundle).getConstructor(classOf[Map[String, String]]).newInstance(this.properties)
+    val stop = Class.forName(this.bundle).newInstance()
+    stop.asInstanceOf[ConfigurableStop].setProperties(this.properties)
+    stop.asInstanceOf[ConfigurableStop]
   }
 
 }

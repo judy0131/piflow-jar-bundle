@@ -1,17 +1,18 @@
 package cn.cnic.bigdata.bundle.csv
 
-import cn.cnic.bigdata.util.OptionUtil
+import cn.cnic.bigdata.bundle.ConfigurableStop
+import cn.cnic.bigdata.util.{MapUtil, OptionUtil}
 import cn.piflow._
 import org.apache.spark.sql.types.{StringType, StructField, StructType}
 import org.apache.spark.sql.{Column, DataFrame, SparkSession}
 
 
-class CSVParser(map : Map[String, String]) extends Stop{
+class CSVParser extends ConfigurableStop{
 
-  var csvPath: String = OptionUtil.get(map.get("csvPath"))
-  val header: Boolean = OptionUtil.get(map.get("header")).toBoolean
-  val delimiter: String = OptionUtil.get(map.get("delimiter"))
-  val schema: String = OptionUtil.get(map.get("schema"))
+  var csvPath: String = _
+  var header: Boolean = _
+  var delimiter: String = _
+  var schema: String = _
 
   def perform(in: JobInputStream, out: JobOutputStream, pec: JobContext): Unit = {
 
@@ -50,6 +51,13 @@ class CSVParser(map : Map[String, String]) extends Stop{
 
   def initialize(ctx: ProcessContext): Unit = {
 
+  }
+
+  def setProperties(map : Map[String, Any]): Unit = {
+    csvPath = MapUtil.get(map,"csvPath").asInstanceOf[String]
+    header = MapUtil.get(map,"header").asInstanceOf[String].toBoolean
+    delimiter = MapUtil.get(map,"delimiter").asInstanceOf[String]
+    schema = MapUtil.get(map,"schema").asInstanceOf[String]
   }
 }
 

@@ -10,7 +10,7 @@ import org.junit.Test
 
 class XmlTest {
 
-  @Test
+  /*@Test
   def testNodeXML(): Unit = {
 
     val flow = new FlowImpl();
@@ -56,5 +56,5 @@ class XmlTest {
     process.awaitTermination();
     spark.close();
   }
-
+*/
 }

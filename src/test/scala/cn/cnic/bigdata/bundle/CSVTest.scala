@@ -9,23 +9,27 @@ import org.junit.Test
 
 class CSVTest {
 
-  /*@Test
+  @Test
   def testCSVHeaderRead(): Unit ={
 
-    val cSVParserParameters : Map[String, String] = Map(
+    val csvParserParameters  = Map(
       "csvPath" -> "hdfs://10.0.86.89:9000/xjzhu/student.csv",
       "header" -> "true",
       "delimiter" -> ",",
-      "schema" -> ""
-    )
+      "schema" -> "")
+    val jsonSaveParameters = Map(
+      "jsonPath" -> "hdfs://10.0.86.89:9000/xjzhu/student_csv2json")
 
-    val jsonPath = "hdfs://10.0.86.89:9000/xjzhu/student_csv2json"
+    val csvParserStop = new CSVParser
+    csvParserStop.setProperties(csvParserParameters)
 
+    val jsonPathStop =new JsonSave
+    jsonPathStop.setProperties(jsonSaveParameters)
 
     val flow = new FlowImpl();
 
-    flow.addStop("CSVParser", new CSVParser(cSVParserParameters));
-    flow.addStop("JsonSave", new JsonSave(jsonPath));
+    flow.addStop("CSVParser", csvParserStop);
+    flow.addStop("JsonSave", jsonPathStop);
     flow.addPath(Path.from("CSVParser").to("JsonSave"));
 
     val spark = SparkSession.builder()
@@ -49,20 +53,26 @@ class CSVTest {
   @Test
   def testCSVSchemaRead(): Unit ={
 
-    val cSVParserParameters : Map[String, String] = Map(
+    val csvParserParameters : Map[String, String] = Map(
       "csvPath" -> "hdfs://10.0.86.89:9000/xjzhu/student_schema.csv",
       "header" -> "false",
       "delimiter" -> ",",
       "schema" -> "id,name,gender,age"
     )
+    val jsonSaveParameters = Map(
+      "jsonPath" -> "hdfs://10.0.86.89:9000/xjzhu/student_schema_csv2json")
 
-    val jsonPath = "hdfs://10.0.86.89:9000/xjzhu/student_schema_csv2json"
 
+    val csvParserStop = new CSVParser
+    csvParserStop.setProperties(csvParserParameters)
+
+    val jsonSaveStop = new JsonSave
+    jsonSaveStop.setProperties(jsonSaveParameters)
 
     val flow = new FlowImpl();
 
-    flow.addStop("CSVParser", new CSVParser(cSVParserParameters));
-    flow.addStop("JsonSave", new JsonSave(jsonPath));
+    flow.addStop("CSVParser", csvParserStop);
+    flow.addStop("JsonSave", jsonSaveStop);
     flow.addPath(Path.from("CSVParser").to("JsonSave"));
 
     val spark = SparkSession.builder()
@@ -81,6 +91,6 @@ class CSVTest {
 
     process.awaitTermination();
     spark.close();
-  }*/
+  }
 
 }

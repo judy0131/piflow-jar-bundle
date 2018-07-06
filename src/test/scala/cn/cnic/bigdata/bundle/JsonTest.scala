@@ -11,14 +11,19 @@ class JsonTest {
   @Test
   def testJsonPathParser(): Unit ={
 
-    val jsonPath = "hdfs://10.0.86.89:9000/xjzhu/student.json"
-    val tag = "student"
-    val jsonSavePath = "hdfs://10.0.86.89:9000/xjzhu/example_json_save"
+    val JsonPathParserParameters = Map("jsonPath"->"hdfs://10.0.86.89:9000/xjzhu/student.json", "tag"->"student")
+    val JsonSavePathParameters = Map("jsonSavePath" -> "hdfs://10.0.86.89:9000/xjzhu/example_json_save")
 
     val flow = new FlowImpl();
 
-    flow.addStop("JsonPathParser", new JsonPathParser(jsonPath, tag));
-    flow.addStop("JsonSave", new JsonSave(jsonSavePath));
+    val jsonPathParserStop = new JsonPathParser()
+    jsonPathParserStop.setProperties(JsonPathParserParameters)
+
+    val jsonSaveStop = new JsonSave()
+    jsonSaveStop.setProperties(JsonSavePathParameters)
+
+    flow.addStop("JsonPathParser", jsonPathParserStop)
+    flow.addStop("JsonSave", jsonSaveStop)
     flow.addPath(Path.from("JsonPathParser").to("JsonSave"));
 
     val spark = SparkSession.builder()

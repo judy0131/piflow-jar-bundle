@@ -1,9 +1,17 @@
 package cn.cnic.bigdata.bundle.jdbc
 
+import cn.cnic.bigdata.bundle.ConfigurableStop
+import cn.cnic.bigdata.util.MapUtil
 import cn.piflow._
 import org.apache.spark.sql.SparkSession
 
-class JDBCRead(driver:String, url:String, user:String, password:String, sql:String) extends Stop  {
+class JDBCRead extends ConfigurableStop  {
+
+  var driver:String = _
+  var url:String = _
+  var user:String = _
+  var password:String = _
+  var sql:String = _
 
   def perform(in: JobInputStream, out: JobOutputStream, pec: JobContext): Unit = {
     val spark = pec.get[SparkSession]()
@@ -25,4 +33,11 @@ class JDBCRead(driver:String, url:String, user:String, password:String, sql:Stri
 
   }
 
+  override def setProperties(map: Map[String, Any]): Unit = {
+    driver = MapUtil.get(map,"driver").asInstanceOf[String]
+    url = MapUtil.get(map,"url").asInstanceOf[String]
+    user = MapUtil.get(map,"user").asInstanceOf[String]
+    password = MapUtil.get(map,"password").asInstanceOf[String]
+    sql = MapUtil.get(map,"sql").asInstanceOf[String]
+  }
 }

@@ -12,13 +12,19 @@ class HiveTest {
   val selectHiveQLParameters : Map[String, String] = Map("hiveQL" -> "select * from sparktest.student")
   val putHiveStreamingParameters : Map[String, String] = Map("database" -> "sparktest", "table" -> "studenthivestreaming")
 
-  /*@Test
+  @Test
   def testHive(): Unit = {
+
+    val selectHiveQLStop = new SelectHiveQL
+    selectHiveQLStop.setProperties(selectHiveQLParameters)
+
+    val putHiveStreamingStop = new PutHiveStreaming
+    putHiveStreamingStop.setProperties(putHiveStreamingParameters)
 
     val flow = new FlowImpl();
 
-    flow.addStop("SelectHiveQL", new SelectHiveQL().setProperties(selectHiveQLParameters));
-    flow.addStop("PutHiveStreaming", new PutHiveStreaming(putHiveStreamingParameters));
+    flow.addStop("SelectHiveQL", selectHiveQLStop);
+    flow.addStop("PutHiveStreaming", putHiveStreamingStop);
     flow.addPath(Path.from("SelectHiveQL").to("PutHiveStreaming"));
 
 
@@ -39,6 +45,6 @@ class HiveTest {
     process.awaitTermination();
     spark.close();
 
-  }*/
+  }
 
 }

@@ -11,19 +11,25 @@ class JDBCTest {
   @Test
   def testMysqlRead(): Unit ={
 
-    val url = "jdbc:mysql://10.0.86.90/sparktest"
-    val driver = "com.mysql.jdbc.Driver"
-    val sql = "select student.id, name, gender, age, score from student, student_score where student.id = student_score.id"
-    val user = "root"
-    val password = "root"
 
-    val writeDBtable = "student_full"
+    val jdbcReadParameters = Map(
+      "url" -> "jdbc:mysql://10.0.86.90/sparktest",
+      "driver"->"com.mysql.jdbc.Driver",
+      "sql"->"select student.id, name, gender, age, score from student, student_score where student.id = student_score.id",
+      "user"->"root",
+      "password"->"root")
+
+    val jdbcWriteParameters = Map("writeDBtable" -> "student_full")
+
+    val jDBCReadStop = new JDBCRead()
+    jDBCReadStop.setProperties(jdbcReadParameters)
+
+    val jDBCWriteStop = new JDBCWrite()
+    jDBCWriteStop.setProperties(jdbcWriteParameters)
 
     val flow = new FlowImpl();
-
-    flow.addStop("JDBCRead", new JDBCRead(driver, url, user, password, sql));
-    flow.addStop("JDBCWrite", new JDBCWrite( url, user, password, writeDBtable));
-    //flow.addStop("PutHiveStreaming", new PutHiveStreaming("sparktest","studenthivestreaming"));
+    flow.addStop("JDBCRead", jDBCReadStop);
+    flow.addStop("JDBCWrite", jDBCWriteStop);
     flow.addPath(Path.from("JDBCRead").to("JDBCWrite"));
 
     val spark = SparkSession.builder()

@@ -10,7 +10,7 @@ import org.junit.Test
 
 class XmlTest {
 
-  /*@Test
+  @Test
   def testNodeXML(): Unit = {
 
     val flow = new FlowImpl();
@@ -25,16 +25,24 @@ class XmlTest {
       StructField("ee", StringType, nullable = true),
       StructField("note", StringType, nullable = true)
     ))*/
-    val xmlParserMap = Map("xmlpath"->"hdfs://10.0.86.89:9000/xjzhu/dblp.mini.xml", "rowTag" -> "phdthesis")
+    val xmlParserParameters = Map("xmlpath"->"hdfs://10.0.86.89:9000/xjzhu/dblp.mini.xml", "rowTag" -> "phdthesis")
 
-    val selectedFieldMap = Map("selectedField"->"title,author,pages")
+    val selectedFieldParameters = Map("selectedField"->"title,author,pages")
 
-    val putHiveStreamingParametersMap = Map("database" -> "sparktest", "table" -> "dblp_phdthesis")
+    val putHiveStreamingParameters = Map("database" -> "sparktest", "table" -> "dblp_phdthesis")
 
-    flow.addStop("XmlParser", new XmlParser( xmlParserMap));
-    flow.addStop("SelectField", new SelectField( selectedFieldMap));
-    flow.addStop("PutHiveStreaming", new PutHiveStreaming(putHiveStreamingParametersMap));
-    //flow.addPath(Path.from("XmlParser").to("SelectField").to("PutHiveStreaming"))
+    val xmlParserStop = new XmlParser
+    xmlParserStop.setProperties(xmlParserParameters)
+
+    val selectFieldStop = new SelectField
+    selectFieldStop.setProperties(selectedFieldParameters)
+
+    val putHiveStreamingStop = new PutHiveStreaming
+    putHiveStreamingStop.setProperties(putHiveStreamingParameters)
+
+    flow.addStop("XmlParser", xmlParserStop);
+    flow.addStop("SelectField", selectFieldStop);
+    flow.addStop("PutHiveStreaming", putHiveStreamingStop);
     flow.addPath(Path.from("XmlParser").to("SelectField"))
     flow.addPath(Path.from("SelectField").to("PutHiveStreaming"))
 
@@ -56,5 +64,4 @@ class XmlTest {
     process.awaitTermination();
     spark.close();
   }
-*/
 }

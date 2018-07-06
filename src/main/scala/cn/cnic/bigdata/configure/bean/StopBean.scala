@@ -33,7 +33,6 @@ object StopBean  {
     val stopBean = new StopBean()
     stopBean.init(map)
     stopBean
-    //stopBean.getStop()
   }
 
 }

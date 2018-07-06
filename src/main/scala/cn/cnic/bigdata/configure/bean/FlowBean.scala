@@ -15,11 +15,15 @@ class FlowBean {
 
     this.uuid = MapUtil.get(flowMap,"uuid").asInstanceOf[String]
     this.name = MapUtil.get(flowMap,"name").asInstanceOf[String]
+
+    //construct StopBean List
     val stopsList = MapUtil.get(flowMap,"stops").asInstanceOf[List[Map[String, Any]]]
     stopsList.foreach( stopMap => {
       val stop = StopBean(stopMap.asInstanceOf[Map[String, Any]])
       this.stops =   stop +: this.stops
     })
+
+    //construct PathBean List
     val pathsList = MapUtil.get(flowMap,"paths").asInstanceOf[List[Map[String, Any]]]
     pathsList.foreach( pathMap => {
       val path = PathBean(pathMap.asInstanceOf[Map[String, Any]])
@@ -27,6 +31,8 @@ class FlowBean {
     })
 
   }
+
+  //create Flow by FlowBean
   def constructFlow()= {
     val flow = new FlowImpl();
     this.stops.foreach( stopBean => {

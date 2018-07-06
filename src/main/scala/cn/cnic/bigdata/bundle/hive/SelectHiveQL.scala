@@ -33,10 +33,10 @@ class SelectHiveQL extends ConfigurableStop {
     val spark = pec.get[SparkSession]()
 
     import spark.sql
-    val studentDF = sql(hiveQL)
-    studentDF.show()
+    val df = sql(hiveQL)
+    df.show()
 
-    out.write(studentDF)
+    out.write(df)
   }
 
   def initialize(ctx: ProcessContext): Unit = {

@@ -46,7 +46,6 @@ object FlowBean{
     val flowBean = new FlowBean()
     flowBean.init(map)
     flowBean
-    //flowBean.getFlowImpl()
   }
 
 }

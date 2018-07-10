@@ -1,9 +1,11 @@
 package cn.cnic.bigdata.bundle.hive
 
 import cn.cnic.bigdata.bundle.ConfigurableStop
-import cn.cnic.bigdata.util.{MapUtil, OptionUtil}
+import cn.cnic.bigdata.configure.bean.PropertyDescriptor
+import cn.cnic.bigdata.util.MapUtil
 import cn.piflow._
-import org.apache.spark.sql.{Column, DataFrame, SparkSession}
+import org.apache.spark.sql.SparkSession
+
 
 
 class SelectHiveQL extends ConfigurableStop {
@@ -26,6 +28,13 @@ class SelectHiveQL extends ConfigurableStop {
 
   def setProperties(map : Map[String, Any]): Unit = {
     hiveQL = MapUtil.get(map,"hiveQL").asInstanceOf[String]
+  }
+
+  override def getPropertyDescriptor(): List[PropertyDescriptor] = {
+    var descriptor : List[PropertyDescriptor] = null
+    val hiveQL = new PropertyDescriptor().name("hiveQL").displayName("HiveQL").defaultValue("").required(true)
+    descriptor = hiveQL :: descriptor
+    descriptor
   }
 }
 

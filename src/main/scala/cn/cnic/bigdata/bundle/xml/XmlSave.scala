@@ -1,6 +1,7 @@
 package cn.cnic.bigdata.bundle.xml
 
 import cn.cnic.bigdata.bundle.ConfigurableStop
+import cn.cnic.bigdata.configure.bean.PropertyDescriptor
 import cn.cnic.bigdata.util.MapUtil
 import cn.piflow._
 
@@ -22,4 +23,6 @@ class XmlSave extends ConfigurableStop{
   override def setProperties(map: Map[String, Any]): Unit = {
     xmlSavePath = MapUtil.get(map,"xmlSavePath").asInstanceOf[String]
   }
+
+  override def getPropertyDescriptor(): List[PropertyDescriptor] = ???
 }

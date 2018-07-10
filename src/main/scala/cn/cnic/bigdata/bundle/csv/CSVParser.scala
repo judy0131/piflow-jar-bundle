@@ -1,6 +1,7 @@
 package cn.cnic.bigdata.bundle.csv
 
 import cn.cnic.bigdata.bundle.ConfigurableStop
+import cn.cnic.bigdata.configure.bean.PropertyDescriptor
 import cn.cnic.bigdata.util.{MapUtil, OptionUtil}
 import cn.piflow._
 import org.apache.spark.sql.types.{StringType, StructField, StructType}
@@ -59,5 +60,7 @@ class CSVParser extends ConfigurableStop{
     delimiter = MapUtil.get(map,"delimiter").asInstanceOf[String]
     schema = MapUtil.get(map,"schema").asInstanceOf[String]
   }
+
+  override def getPropertyDescriptor(): List[PropertyDescriptor] = ???
 }
 

@@ -1,6 +1,7 @@
 package cn.cnic.bigdata.bundle.json
 
 import cn.cnic.bigdata.bundle.ConfigurableStop
+import cn.cnic.bigdata.configure.bean.PropertyDescriptor
 import cn.cnic.bigdata.util.MapUtil
 import cn.piflow._
 import org.apache.spark.sql.SparkSession
@@ -29,6 +30,8 @@ class JsonPathParser extends ConfigurableStop{
     jsonPath = MapUtil.get(map,"jsonPath").asInstanceOf[String]
     tag = MapUtil.get(map,"tag").asInstanceOf[String]
   }
+
+  override def getPropertyDescriptor(): List[PropertyDescriptor] = ???
 }
 
 class JsonStringParser extends ConfigurableStop{
@@ -52,4 +55,6 @@ class JsonStringParser extends ConfigurableStop{
   override def setProperties(map: Map[String, Any]): Unit = {
     jsonString = MapUtil.get(map,"jsonString").asInstanceOf[String]
   }
+
+  override def getPropertyDescriptor(): List[PropertyDescriptor] = ???
 }

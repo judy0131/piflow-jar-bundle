@@ -1,6 +1,7 @@
 package cn.cnic.bigdata.bundle.common
 
 import cn.cnic.bigdata.bundle.ConfigurableStop
+import cn.cnic.bigdata.configure.bean.PropertyDescriptor
 import cn.cnic.bigdata.util.{MapUtil, OptionUtil}
 import cn.piflow._
 import org.apache.spark.sql.{Column, DataFrame}
@@ -33,6 +34,8 @@ class SelectField extends ConfigurableStop {
   def setProperties(map : Map[String, Any]): Unit = {
     schema = MapUtil.get(map,"schema").asInstanceOf[String]
   }
+
+  override def getPropertyDescriptor(): List[PropertyDescriptor] = ???
 }
 
 

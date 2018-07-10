@@ -3,6 +3,7 @@ package cn.cnic.bigdata.bundle.jdbc
 import java.util.Properties
 
 import cn.cnic.bigdata.bundle.ConfigurableStop
+import cn.cnic.bigdata.configure.bean.PropertyDescriptor
 import cn.cnic.bigdata.util.MapUtil
 import cn.piflow._
 import org.apache.spark.sql.{SaveMode, SparkSession}
@@ -35,4 +36,6 @@ class JDBCWrite extends ConfigurableStop{
     password = MapUtil.get(map,"password").asInstanceOf[String]
     dbtable = MapUtil.get(map,"dbtable").asInstanceOf[String]
   }
+
+  override def getPropertyDescriptor(): List[PropertyDescriptor] = ???
 }

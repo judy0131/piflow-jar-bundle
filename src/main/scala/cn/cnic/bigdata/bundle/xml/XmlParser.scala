@@ -1,6 +1,7 @@
 package cn.cnic.bigdata.bundle.xml
 
 import cn.cnic.bigdata.bundle.ConfigurableStop
+import cn.cnic.bigdata.configure.bean.PropertyDescriptor
 import cn.cnic.bigdata.util.{MapUtil, OptionUtil}
 import org.apache.hadoop.fs.FileSystem
 import org.apache.spark.sql.{Column, DataFrame, SparkSession}
@@ -39,4 +40,6 @@ class XmlParser extends ConfigurableStop {
     rowTag = MapUtil.get(map,"rowTag").asInstanceOf[String]
     schema = null
   }
+
+  override def getPropertyDescriptor(): List[PropertyDescriptor] = ???
 }

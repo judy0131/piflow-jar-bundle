@@ -1,6 +1,7 @@
 package cn.cnic.bigdata.bundle.common
 
 import cn.cnic.bigdata.bundle.ConfigurableStop
+import cn.cnic.bigdata.configure.bean.PropertyDescriptor
 import cn.piflow.lib.DoMerge
 import cn.piflow.{JobContext, JobInputStream, JobOutputStream, ProcessContext}
 
@@ -17,4 +18,6 @@ class Merge extends ConfigurableStop{
   def setProperties(map : Map[String, Any]): Unit = {
 
   }
+
+  override def getPropertyDescriptor(): List[PropertyDescriptor] = ???
 }

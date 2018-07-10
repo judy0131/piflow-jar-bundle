@@ -1,6 +1,7 @@
 package cn.cnic.bigdata.bundle.hive
 
 import cn.cnic.bigdata.bundle.ConfigurableStop
+import cn.cnic.bigdata.configure.bean.PropertyDescriptor
 import cn.cnic.bigdata.util.{MapUtil, OptionUtil}
 import cn.piflow._
 import org.apache.spark.sql.SparkSession
@@ -30,4 +31,5 @@ class PutHiveStreaming extends ConfigurableStop {
     table = MapUtil.get(map,"table").asInstanceOf[String]
   }
 
+  override def getPropertyDescriptor(): List[PropertyDescriptor] = ???
 }

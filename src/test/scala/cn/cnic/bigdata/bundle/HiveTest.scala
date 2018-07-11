@@ -6,13 +6,15 @@ import cn.piflow._
 import org.apache.spark.sql.SparkSession
 import org.junit.Test
 
+import scala.io.Source
+
 
 class HiveTest {
 
   val selectHiveQLParameters : Map[String, String] = Map("hiveQL" -> "select * from sparktest.student")
   val putHiveStreamingParameters : Map[String, String] = Map("database" -> "sparktest", "table" -> "studenthivestreaming")
 
-  @Test
+  /*@Test
   def testHive(): Unit = {
 
     val selectHiveQLStop = new SelectHiveQL
@@ -45,6 +47,30 @@ class HiveTest {
     process.awaitTermination();
     spark.close();
 
+  }*/
+
+  @Test
+  def testHiveQl() = {
+
+    val spark = SparkSession.builder()
+      .master("spark://10.0.86.89:7077")
+      .appName("piflow-hive-bundle")
+      .config("spark.driver.memory", "1g")
+      .config("spark.executor.memory", "2g")
+      .config("spark.cores.max", "2")
+      .config("spark.jars","/opt/project/piflow-jar-bundle/out/artifacts/piflow-jar-bundle/piflow-jar-bundle.jar")
+      .enableHiveSupport()
+      .getOrCreate()
+
+    import spark.sql
+    //val hiveql = spark.read.textFile("hdfs://10.0.86.89:9000/xjzhu/test.hiveql")
+    val hiveql = Source.fromFile("/opt/data/test.hiveql")
+
+    hiveql.getLines().foreach( x =>{
+      println(x)
+      sql(x)
+    }
+    )
   }
 
 }

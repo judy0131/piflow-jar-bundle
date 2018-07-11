@@ -30,7 +30,7 @@ class FlowTest {
       .config("spark.driver.memory", "1g")
       .config("spark.executor.memory", "2g")
       .config("spark.cores.max", "2")
-      .config("spark.jars","/opt/project/piflow-jar-bundle/out/artifacts/piflow-jar-bundle/piflow-jar-bundle.jar")
+      .config("spark.jars","/opt/project/piflow-jar-bundle/out/artifacts/piflow_jar_bundle/piflow-jar-bundle.jar")
       .enableHiveSupport()
       .getOrCreate()
 

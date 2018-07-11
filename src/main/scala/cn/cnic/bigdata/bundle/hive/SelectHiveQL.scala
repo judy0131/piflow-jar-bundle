@@ -31,7 +31,7 @@ class SelectHiveQL extends ConfigurableStop {
   }
 
   override def getPropertyDescriptor(): List[PropertyDescriptor] = {
-    var descriptor : List[PropertyDescriptor] = null
+    var descriptor : List[PropertyDescriptor] = List()
     val hiveQL = new PropertyDescriptor().name("hiveQL").displayName("HiveQL").defaultValue("").required(true)
     descriptor = hiveQL :: descriptor
     descriptor

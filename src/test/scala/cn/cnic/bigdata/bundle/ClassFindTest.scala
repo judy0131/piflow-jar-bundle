@@ -1,13 +1,11 @@
 package cn.cnic.bigdata.bundle
 
-import cn.cnic.bigdata.bundle.hive.{PutHiveStreaming, SelectHiveQL}
-import cn.piflow.{FlowImpl, Path, Runner, Stop}
-import org.apache.spark.sql.SparkSession
+import cn.cnic.bigdata.util._
 import org.junit.Test
 
 class ClassFindTest {
 
-  @Test
+  /*@Test
   def testClassFind(): Unit = {
     val selectHiveQLClassName = "cn.cnic.bigdata.bundle.hive.SelectHiveQL"
     val putHiveStreamingClassName = "cn.cnic.bigdata.bundle.hive.PutHiveStreaming"
@@ -40,6 +38,26 @@ class ClassFindTest {
 
     process.awaitTermination();
     spark.close();
+  }*/
+
+  @Test
+  def testFindAllConfigurableStop() = {
+    val allConfigurableStopList = ClassUtil.findAllConfigurableStop()
+    println()
+    allConfigurableStopList.foreach(println)
+  }
+
+  @Test
+  def testFindConfigurableStop() = {
+    val bundle = "cn.cnic.bigdata.bundle.hive.SelectHiveQL"
+    val stop = ClassUtil.findConfigurableStop(bundle)
+    stop match {
+      case Some(x) => {
+        val propertiesDescList = x.getPropertyDescriptor()
+        propertiesDescList.foreach(println(_))
+      }
+      case _ => println("Can not find : " + bundle)
+    }
   }
 
 }

@@ -1,0 +1,2 @@
+drop table if exists test;
+create table if not exists puthiveql_test(title STRING,author STRING,pages STRING);

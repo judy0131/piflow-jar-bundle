@@ -42,4 +42,18 @@ class FlowTest {
     spark.close();
   }
 
+  @Test
+  def testFlow2json() = {
+
+    //parse flow json
+    val file = "src/main/resources/flow.json"
+    val flowJsonStr = FileUtil.fileReader(file)
+    val map = OptionUtil.getAny(JSON.parseFull(flowJsonStr)).asInstanceOf[Map[String, Any]]
+
+    //create flow
+    val flowBean = FlowBean(map)
+    val flowJson = flowBean.toJson()
+    println(flowJson)
+  }
+
 }

@@ -1,7 +1,11 @@
 package cn.cnic.bigdata.configure.bean
 
 import cn.cnic.bigdata.util.{MapUtil, OptionUtil}
-import cn.piflow.{Flow, FlowImpl, Path}
+import cn.piflow.{ FlowImpl, Path}
+import net.liftweb.json._
+import net.liftweb.json.JsonDSL._
+import net.liftweb.json.Serialization.write
+
 
 class FlowBean {
   var uuid : String = _
@@ -43,6 +47,28 @@ class FlowBean {
     })
 
     flow
+  }
+
+  def toJson():String = {
+    val json =
+      ("flow" ->
+        ("uuid" -> this.uuid) ~
+          ("name" -> this.name) ~
+          ("stops" ->
+            stops.map { stop =>(
+              ("uuid" -> stop.uuid) ~
+                ("name" -> stop.name)~
+                ("bundle" -> stop.bundle) )}) ~
+          ("paths" ->
+            paths.map { path => (
+              ("from" -> path.from) ~
+                ("outport" -> path.outport) ~
+                ("inport" -> path.inport) ~
+                ("to" -> path.to)
+            )}))
+    val jsonString = compactRender(json)
+    //println(jsonString)
+    jsonString
   }
 
 }
